@@ -7,6 +7,8 @@ export interface Project {
   css: string;
   js: string;
   react_code?: string;
+  package_json?: string;
+  folder_structure?: string;
   created_at: string;
 }
 
@@ -17,4 +19,6 @@ export interface GeneratedCode {
   css: string;
   js: string;
   react_code?: string;
+  package_json?: string;
+  folder_structure?: string;
 }

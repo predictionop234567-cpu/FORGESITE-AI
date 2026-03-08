@@ -20,6 +20,8 @@ db.exec(`
     css TEXT NOT NULL,
     js TEXT NOT NULL,
     react_code TEXT,
+    package_json TEXT,
+    folder_structure TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
   )
 `);
@@ -37,12 +39,12 @@ async function startServer() {
   });
 
   app.post("/api/projects", (req, res) => {
-    const { id, name, prompt, specification, html, css, js, react_code } = req.body;
+    const { id, name, prompt, specification, html, css, js, react_code, package_json, folder_structure } = req.body;
     const stmt = db.prepare(`
-      INSERT INTO projects (id, name, prompt, specification, html, css, js, react_code)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO projects (id, name, prompt, specification, html, css, js, react_code, package_json, folder_structure)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
-    stmt.run(id, name, prompt, specification, html, css, js, react_code);
+    stmt.run(id, name, prompt, specification, html, css, js, react_code, package_json, folder_structure);
     res.json({ success: true });
   });
 

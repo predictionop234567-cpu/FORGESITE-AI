@@ -106,8 +106,12 @@ export default function App() {
         contents: `Act as a world-class senior full-stack engineer, product architect, and UX designer. 
         Your goal is to produce software that feels like a real startup product rather than a demo project.
         
-        Before generating any code, you MUST plan the project like a senior engineer.
-        
+        Reasoning Process:
+        1. Understand the Prompt: Deeply analyze the user's request, identifying the core problem, target audience, and functional requirements.
+        2. Infer Required Features: List all necessary features, including user authentication (if needed), data persistence strategies, responsive design requirements, and interactive elements.
+        3. Plan Architecture: Design a scalable and maintainable structure. Select the most appropriate technologies from: HTML, CSS, JavaScript, React, Next.js, Node.js, Express, and TailwindCSS.
+        4. Generate Full Project Code: Implement the plan with production-quality, well-commented code. Ensure all imports are valid and components are correctly connected.
+
         Your response MUST include a detailed "specification" field in Markdown that defines:
         1. Product Goal: What is the primary purpose of this site?
         2. User Flows: How do users navigate and interact with the core features?
@@ -126,6 +130,7 @@ export default function App() {
         4. Maintainable Architecture: Write clean, well-commented, and modular code.
         5. Completeness: Ensure all features mentioned in the plan are fully implemented. No placeholders.
         6. Interactivity: Use modern JS patterns for state management and dynamic UI updates.
+        7. Deployment Ready: Ensure the project is ready for deployment on Vercel, Netlify, or Node hosting. Include a valid package.json and a clear folder structure.
         
         Return a JSON object with exactly these keys:
         - name: A professional name for the site.
@@ -133,6 +138,8 @@ export default function App() {
         - html: The HTML content for the body (do not include <html>, <head>, or <body> tags).
         - css: Any custom CSS needed (Tailwind is already included).
         - js: Any JavaScript for interactivity.
+        - package_json: A valid package.json file with correct dependencies and build scripts (dev, build, start).
+        - folder_structure: A text representation of the project's folder structure.
         
         User Prompt: "${prompt}"`,
         config: { responseMimeType: "application/json" }
@@ -147,6 +154,8 @@ export default function App() {
         html: result.html,
         css: result.css,
         js: result.js,
+        package_json: result.package_json,
+        folder_structure: result.folder_structure,
         created_at: new Date().toISOString()
       };
 
@@ -185,6 +194,15 @@ export default function App() {
     zip.file("index.html", fullHtml);
     zip.file("styles.css", currentProject.css);
     zip.file("script.js", currentProject.js);
+    if (currentProject.package_json) {
+      zip.file("package.json", currentProject.package_json);
+    }
+    if (currentProject.folder_structure) {
+      zip.file("folder_structure.txt", currentProject.folder_structure);
+    }
+    if (currentProject.specification) {
+      zip.file("specification.md", currentProject.specification);
+    }
 
     const content = await zip.generateAsync({ type: "blob" });
     const url = window.URL.createObjectURL(content);
