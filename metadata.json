@@ -1,0 +1,9 @@
+{
+  "name": "ForgeSite AI",
+  "description": "A production-ready AI website builder platform that transforms prompts into fully functional websites and applications.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
